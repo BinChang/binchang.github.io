@@ -40,7 +40,7 @@ So here is the question, how soon could we use the non-gil python in our day to 
 > 2. After 2–3 releases, (i.e., in 2026–2027), CPython is released with the GIL controlled by a runtime environment variable or flag. The GIL is enabled by default. There is only a single ABI.
 > 3. After another 2–3 release (i.e., 2028–2030), CPython switches to the GIL being disabled by default. The GIL can still be enabled at runtime via an environment variable or command line flag.
 
-![non-gil timeline](/docs/assets/non-gil-timeline.png)
+![non-gil timeline](/assets/non-gil-timeline.png)
 
 It's anticipated to take approximately 7 years and span 7 releases before non-GIL Python becomes the default option on your MacBook. This extended timeline arises from the fact that a programming language forms the bedrock of the software ecosystem. While adding new features is relatively straightforward, implementing changes that break backward compatibility demands substantial effort. You must wait for all libraries to embrace the modification. A notable example is the transition from Python 2 to Python 3. Python 3.0, also known as "Python 3000" or "Py3K," was launched on December 3, 2008. Despite 15 years passing since its release, there are still a significant number of Python 2 users.
 
@@ -82,7 +82,7 @@ The 'nogil' repository offers an optimal code snippet for benchmarking multi-thr
 
 I run the tests on my MacBook, equipped with 12 CPU cores and large enough memory. I evaluated the code in both non-GIL Python and GIL Python environments. The outcomes are outlined below:
 
-![benchmark-1](/docs/assets/benchmark-1.png)
+![benchmark-1](/assets/benchmark-1.png)
 
 As the metrics show,  non-GIL python is nearly 15 times faster than GIL python if we have 60 threads running their own workloads independently, this examples shows the huge negative impact of GIL on python in a multi-thread environment. 
 
@@ -110,7 +110,7 @@ I also made some adjustments to the test code above. I substituted the Fibonacci
 
 Then I ran tests in both GIL python and non-GIL python,  the result is in the table below.  As the chart shows,  the non-GIL python is 7 times faster than the GIL python. 
 
-![benchmark-1](/docs/assets/benchmark-2.png)
+![benchmark-1](/assets/benchmark-2.png)
 
 The benchmarks clearly demonstrate that the non-GIL version of Python effectively harnesses multiple CPU cores through multi-threading, exhibiting a speed boost of approximately 5-8 times compared to the standard Python version.
 
