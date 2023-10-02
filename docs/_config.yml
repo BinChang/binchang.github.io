@@ -32,7 +32,9 @@ linkedin_username: binchang
 theme: minima
 # plugins:
   # - jekyll-feed
-  google_analytics: G-6W1QCC08KX
+
+# Analytics settings
+google_analytics: G-6W1QCC08KX
 
 # Exclude from processing.
 # The following items will not be processed, by default.
