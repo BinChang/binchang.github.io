@@ -106,7 +106,7 @@ I also made some adjustments to the test code above. I substituted the Fibonacci
 
     with ThreadPoolExecutor(max_workers=threads) as executor:
         for _ in range(threads):
-            executor.submit(lambda: print(list_benchmark(300)))
+            executor.submit(lambda: list_benchmark(300))
 
 Then I ran tests in both GIL python and non-GIL python,  the result is in the table below.  As the chart shows,  the non-GIL python is 7 times faster than the GIL python. 
 
