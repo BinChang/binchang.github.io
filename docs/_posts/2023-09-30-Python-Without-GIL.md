@@ -13,11 +13,11 @@ In essence, the GIL serves as a Mutex (or Lock) that shields the Python interpre
 
 Throughout history, there have been various endeavors to eliminate the Global Interpreter Lock (GIL) in the Python interpreter. 
 
-In 1999, Greg Stein spearheaded the free-threading initiative. While it achieved success in terms of functionality, it unfortunately led to a significant slowdown in Python's performance, rendering it impractical for widespread adoption within the community.
+In 1999, Greg Stein spearheaded the [free-threading initiative][1]. While it achieved success in terms of functionality, it unfortunately led to a significant slowdown in Python's performance, rendering it impractical for widespread adoption within the community.
 
- In 2015, Larry Hastings embarked on the Gelectomy project, which, once again, encountered performance issues.
+ In 2015, Larry Hastings embarked on [the Gelectomy project](https://pythoncapi.readthedocs.io/gilectomy.html), which, once again, encountered performance issues.
 
-Fast forward to PyCon in 2022, where Sam Gross introduced his "nogil" proposal, subsequently formalized as "PEP 703" under the title "Making the Global Interpreter Lock Optional in CPython." Following extensive and thorough discussions, on July 28, 2023, the Python steering council made the momentous decision to integrate the nogil work into the official CPython release. This marked a pivotal milestone as Python, after nearly three decades since its inception, took a significant step toward addressing its most notorious characteristic.
+Fast forward to PyCon in 2022, where Sam Gross introduced [his "nogil" proposal](https://docs.google.com/document/d/18CXhDb1ygxg-YXNBJNzfzZsDFosB5e6BfnXLlejd9l0/edit#heading=h.kcngwrty1lv), subsequently formalized as ["PEP 703" under the title "Making the Global Interpreter Lock Optional in CPython."](https://peps.python.org/pep-0703/) Following extensive and thorough discussions, on July 28, 2023, the Python steering council made the momentous decision to integrate the nogil work into the official CPython release. This marked a pivotal milestone as Python, after nearly three decades since its inception, took a significant step toward addressing its most notorious characteristic.
 
 
 Sam Gross is a Software engineer at Meta, he is also working on the PyTorch project. 
@@ -29,7 +29,7 @@ In PEP 703, a series of methods have been employed to enhance Python's Garbage C
 
 1. Introduction of biased reference counting: This approach replaces traditional reference counting. Biased reference counting assumes that the majority of variables are confined to a single thread. Each variable is assigned to a specific thread as its owner. It maintains a local variable to track references within this thread and utilizes an atomic integer to monitor references in other threads. These counts are later consolidated when the owning thread's reference count reaches zero.
 2. Overhauling the implementation of Python collections (e.g., lists, dictionaries, etc.): PEP 703 dedicates substantial efforts to upgrade these data structures to ensure optimal performance for read-only access in multi-threaded environments.
-3. Adoption of a new memory allocator, mimalloc: This allocator supersedes Python's default pymalloc. Mimalloc is thread-safe and exhibits superior performance, whereas pymalloc lacks thread safety.
+3. Adoption of a new memory allocator, [mimalloc](https://www.microsoft.com/en-us/research/uploads/prod/2019/06/mimalloc-tr-v1.pdf): This allocator supersedes Python's default pymalloc. Mimalloc is thread-safe and exhibits superior performance, whereas pymalloc lacks thread safety.
    
 There are other efforts in PEP 703, but these are the three most important design decisions. 
 
@@ -118,4 +118,11 @@ Furthermore, evaluations on pyperformance benchmarking indicate that the non-GIL
 
 ## Conclusion
 
-Creating this non-GIL version of Python was a substantial undertaking, involving meticulous design and thorough benchmarking. Our tests above affirm that the non-GIL Python genuinely maximizes the potential of multiple CPU cores, particularly in compute-intensive scenarios. However, it's important to note that even though progress is being made, it may take up to 7 years before non-GIL becomes the default in Python. If you want to try non-GIL python before it is fully mature, you need to take some risk and possibly make adjustments to libraries that aren't inherently thread-safe in their Python code. 
+Creating this non-GIL version of Python was a substantial undertaking, involving meticulous design and thorough benchmarking. Our tests above affirm that the non-GIL Python genuinely maximizes the potential of multiple CPU cores, particularly in compute-intensive scenarios. However, it's important to note that even though progress is being made, it may take up to 7 years before non-GIL becomes the default in Python. If you want to try non-GIL python before it is fully mature, you need to take some risk and possibly make adjustments to libraries that aren't inherently thread-safe in their Python code. [hobbit-hole][1]
+
+
+[1]: <https://mail.python.org/pipermail/python-dev/2000-April/003605.html> "free-threading initiative"
+[2]: <https://pythoncapi.readthedocs.io/gilectomy.html> "the Gelectomy project"
+
+
+
