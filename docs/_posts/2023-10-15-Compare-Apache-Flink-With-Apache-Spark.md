@@ -58,21 +58,21 @@ Apache Spark supports multiple languages, including Java, Scala, Python, and R. 
 
 Apache Spark and Apache Flink share a list of high level design concepts, we could consider that as a common good practice of implementing a large scale data processing framework that could scale horizontally in data center clusters.   
 
-## A Rich Client 
+### A Rich Client 
 
 If you consider Apache Flink or Apache Spark a super computer,  you need a console to talk these super computer,  this is where the client is used.  Apache Spark’s client is also called the Driver program which owns the Spark Context of this application, it acts like a command center with the assistance of the cluster manager. 
 
-## A List of Tasker Nodes
+### A List of Tasker Nodes
 
 In Apache Flink,  the tasker node is called Task Manager.  In Apache Spark, these nodes are called worker nodes.   Each worker node has its own cache and storage, and it could also run multiple tasks in parallel.  The tasker nodes are the core worker horse that makes the platform horizontally scalable. 
 
-## Write Once and Execute Everywhere
+### Write Once and Execute Everywhere
 
 Both Apache Flink and Apache Spark allows the engineers to code the code in the client side, then it optimizes the execution plan based on the pipeline DAG and delivers the code to tasker node and executes there.  The ability is generally referred to as write once and execute everywhere.  It is the foundation for all the coordination and optimization of Flink and Spark.   
 
 For example, In a Spark REPL environent, spark compile the user code to class files and put on a file server, the executor implements a custom classloader which load the class from the file server on the driver side; the class is actually a function to run against a iterator of records, this is how the interaction mode delivers logic to worker nodes. 
 
-## Support multiple layer’s programming interface
+### Support multiple layer’s programming interface
 
 Most of the time, when we do business analytics,  SQL is still our best friend, because everybody knows SQL, and SQL is very expressive.   A big data analytical framework must support SQL.  Both Apache Flink and Apache Spark support SQL based programming. 
 
@@ -97,5 +97,91 @@ Apache Spark implemented Datasets, DataFrames.  A Dataset is a distributed colle
 _Figure 7:The API stack of Apache Spark_
 
 
-## Hide Complexity from Engineers
+### Hide Complexity from Engineers
  Another common design principle of these two platforms is that lots of optimization and coordination are hidden away from the engineers.  Engineers only need to define the input / output of the application, and define the hyper functions that transform the streams or the RDDs.  These two platforms will take it from there, it will create the actual execution plan which is a DAG, run optimization and sharding of the DAG, then allocate task executors to execute plan and eventually export the result as configured.  All the details of optimizing and executing such a complex task in a full distributed fashion is hidden away from the engineers, so engineers could focus on high level scoping. 
+
+ # Run Data Analysis with Apache Spark
+
+ Now, we are going to build an Apache Spark program to analyze web logs of a site that contains 10K visit records.  The full notebook is at [here](https://www.kaggle.com/happycoolbaby/http-log-analysis-via-spark).  
+
+ First, we want to initialize the pyspark environment and load the log file as line based text, then parse the log line into structured row. 
+
+```
+import pyspark
+from pyspark import SparkConf
+from pyspark.sql import SparkSession
+from pyspark.sql import Row
+
+
+appName = 'process-log-files'
+path = "/kaggle/input/server-logs/logfiles.log"
+
+
+spark = SparkSession \
+    .builder \
+    .appName(appName) \
+    .getOrCreate()
+
+def parseLine(row):
+    line = row.value
+    tokens = line.split()
+    ip = tokens[0]
+    method = tokens[5][1:]
+    path = tokens[6]
+    status = tokens[8]
+    endPoint = f"{method} {path}"
+    return Row(ip=ip, method=method, path=path, status=status, endPoint=endPoint)
+    
+
+parsedRDD = spark.read.text(path) \
+    .rdd \
+    .map(parseLine) 
+```
+
+Then we group all request logs by the request IPs, count the # of requests of each IP, then sort all records by visit count. 
+
+```
+ipCountRddSorted = parsedRDD.groupBy(lambda r: r.ip)\
+    .map(lambda r: (r[0], len(list(r[1])))) \
+    .sortBy(lambda r: r[1], ascending=False)
+
+ipCountRddSorted.take(5)
+```
+
+The top 5 IP with the most requests are
+
+```
+[
+ ('46.239.178.40', 2),
+ ('110.109.131.215', 2),
+ ('75.34.183.185', 2),
+ ('44.100.225.119', 2),
+ ('31.58.205.61', 2)
+]
+```
+
+As the result shows, each IP sends out at most 2 requests, we do not have a lot of requests from certain IPs.
+
+Now let's find the most popular endpoints, and their traffic
+
+```
+endpointCountRddSorted = parsedRDD.groupBy(lambda r: r.endPoint)\
+    .map(lambda r: (r[0], len(list(r[1])))) \
+    .sortBy(lambda r: r[1], ascending=False)
+
+endpointCountRddSorted.take(5)
+```
+
+The top 5 most visited endpoints are 
+
+```
+[
+    ('PUT /usr/register', 50515),
+    ('GET /usr/login', 50480), 
+    ('PUT /usr/admin/developer', 50179), 
+    ('GET /usr', 50158), 
+    ('DELETE /usr', 50138)
+]
+```
+
+As this sample application shows, with Apache Spark, we could quick write analysis code with a few lines of code. These code will be submitted to a task manager to execute via a big apache spark cluster, with this, we could write a few line's code to analyze the web scale data, and we do not need to worry about all the messy details of build distributed systems. 
