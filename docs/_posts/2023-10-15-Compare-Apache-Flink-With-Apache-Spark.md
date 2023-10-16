@@ -18,7 +18,7 @@ _Figure 2:  Spark vs Flink in the big data platform([source](https://www.slidesh
 
 So, in this blog post, we're gonna to compare these two platforms. We'll break down the common design principles to build a big data processing platform, we will also highlight the different design choices of these two platforms. Stay tuned!
 
-# Apache Spark 
+# Apache Flink 
 
 Apache Flink provides high-throughput, low-latency streaming engineers as well as support for event-time processing and state management.  In its core,  apache flink implemented a distributed streaming data-flow engine written in Java and Scala. 
 
