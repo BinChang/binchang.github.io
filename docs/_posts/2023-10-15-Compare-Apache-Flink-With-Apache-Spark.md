@@ -100,7 +100,7 @@ _Figure 7:The API stack of Apache Spark_
 ### Hide Complexity from Engineers
  Another common design principle of these two platforms is that lots of optimization and coordination are hidden away from the engineers.  Engineers only need to define the input / output of the application, and define the hyper functions that transform the streams or the RDDs.  These two platforms will take it from there, it will create the actual execution plan which is a DAG, run optimization and sharding of the DAG, then allocate task executors to execute plan and eventually export the result as configured.  All the details of optimizing and executing such a complex task in a full distributed fashion is hidden away from the engineers, so engineers could focus on high level scoping. 
 
- # Run Data Analysis with Apache Spark
+# Run Data Analysis with Apache Spark
 
  Now, we are going to build an Apache Spark program to analyze web logs of a site that contains 10K visit records.  The full notebook is at [here](https://www.kaggle.com/happycoolbaby/http-log-analysis-via-spark).  
 
