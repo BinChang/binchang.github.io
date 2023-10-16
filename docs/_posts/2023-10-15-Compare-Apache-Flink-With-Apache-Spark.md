@@ -102,7 +102,7 @@ _Figure 7:The API stack of Apache Spark_
 
 # Run Data Analysis with Apache Spark
 
- Now, we are going to build an Apache Spark program to analyze web logs of a site that contains 10K visit records.  The full notebook is at [here](https://www.kaggle.com/happycoolbaby/http-log-analysis-via-spark).  
+ Now, we are going to build an Apache Spark program to analyze web logs of a site that contains 1,000,000 visit records.  The full notebook is at [here](https://www.kaggle.com/happycoolbaby/http-log-analysis-via-spark).  
 
  First, we want to initialize the pyspark environment and load the log file as line based text, then parse the log line into structured row. 
 
