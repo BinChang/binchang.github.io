@@ -141,3 +141,23 @@ It is very interesting that Slack and Discord used both SQL and NoSQL DB to solv
 * Nowadays most of the startups start with cloud hosted storage solutions, and there are a lot of choices in the market from AWS, GCP and Azure.  But once one start reaches certain scale, it needs to have a vision of the long term solution. Both discord and slack determine to operate their message storage in house, because of its huge volume and importance. 
 * Operating open-source sotrage solutions means investment of eng resources.  Both companies encoutered issues and have to spend multiple eng years to tackle them. 
 * There could be multiple tech approaches for a given problem. Nowadays, it might feel too old-school to storage all the message records at Slack's scale in a SQL db,  but Slack did it and engjoyed the benefit of SQL engine. 
+
+
+# Reference
+
+* [How Discord Stores Trillions of Messages](https://discord.com/blog/how-discord-stores-trillions-of-messages)
+* [How Discord Stores Billions of Messages](https://discord.com/blog/how-discord-stores-billions-of-messages)
+* [Announcing Snowflake](https://blog.twitter.com/engineering/en_us/a/2010/announcing-snowflake)
+* [Scylla Summit 2018: Discord: The Joy of Opinionated Systems](https://www.slideshare.net/ScyllaDB/scylla-summit-2018-discord-the-joy-of-opinionated-systems)
+* [How Discord Migrated Trillions of Messages from Cassandra to ScyllaDB](https://www.slideshare.net/ScyllaDB/how-discord-migrated-trillions-of-messages-from-cassandra-to-scylladb)
+* [Why Discord is switching from Go to Rust](https://discord.com/blog/why-discord-is-switching-from-go-to-rust)
+* [Real-time Messaging - Slack Engineering](https://slack.engineering/real-time-messaging/)
+* [Scaling Slack - The Good, the Unexpected, and the Road Ahead](https://www.slideshare.net/InfoQ/scaling-slack-the-good-the-unexpected-and-the-road-ahead)
+* [Scaling Slack during explosive growth](https://www.slideshare.net/setoide/scaling-slack-during-explosive-growth)
+* [20000 Leagues Under the Sea: Diving Into the Slack Infrastructure](https://www.slideshare.net/RaissaLargman/20000-leagues-under-the-sea-diving-into-the-slack-infrastructure)
+* [Scaling resilient systems: a journey into Slack's database service](https://static.sched.com/hosted_files/kccncna19/13/Scaling%20resilient%20systems%20-%20A%20journey%20into%20Slack%27s%20database%20service.pdf?_gl=1*dqkx2f*_ga*MTkzMDQ2MzAyOS4xNjk3NzQyOTk0*_ga_XH5XM35VHB*MTY5Nzc0Mjk5NC4xLjAuMTY5Nzc0Mjk5NC42MC4wLjA)
+* [2018 - Designing and Launching the Next-Generation Database System @ Slack - From Whiteboard to Production (PerconaLive 2018 - Santa Clara, USA](https://github.com/guidoiaquinti/guidoiaquinti/blob/main/presentations/2018%20-%20Designing%20and%20Launching%20the%20Next-Generation%20Database%20System%20%40%20Slack%20-%20From%20Whiteboard%20to%20Production%20(PerconaLive%202018%20-%20Santa%20Clara%2C%20USA).pdf)
+* [Vitess: Sharded MySQL on Kubernetes](https://vitess.io/files/2019-sugu-percona-eu.pdf)
+* [2020 - Codename VIFL - How to Migrate MySQL Database Clusters to Vitess (KubeCon 2020 - virtual conference).pdf](https://github.com/guidoiaquinti/guidoiaquinti/blob/main/presentations/2020%20-%20Codename%20VIFL%20-%20How%20to%20Migrate%20MySQL%20Database%20Clusters%20to%20Vitess%20(KubeCon%202020%20-%20virtual%20conference).pdf)
+* [Unofficial Discord API Docs: Discord's Internal Infrastructure](https://luna.gitlab.io/discord-unofficial-docs/infrastructure.html)
+* [how-discord-scaled-elixir-to-5-000-000-concurrent-users](https://discord.com/blog/how-discord-scaled-elixir-to-5-000-000-concurrent-users)
