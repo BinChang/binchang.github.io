@@ -55,3 +55,5 @@ google_analytics: G-6W1QCC08KX
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+markdown: kramdown
