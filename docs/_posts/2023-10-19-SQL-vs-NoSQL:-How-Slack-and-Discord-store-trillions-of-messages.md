@@ -31,7 +31,7 @@ Back to our topic of storage,  to support this type of hyper growth,  Slack’s 
 ![Slack Architecture in 2018](/assets/slack-discord/Slack-architecture-2018.png)
 _Figure:  Slack Architecture in 2018_ 
 
-## Vitess
+#### Vitess
 
  Vitess (https://vitess.io/) is a database clustering system for horizontal scaling of MySQL through generalized sharding.  It encapsulates the shard-routing logic from the application layer, and allows application code and database queries to remain agnostic to the distribution of data onto multiple shards.  
 
@@ -44,7 +44,7 @@ Its high level architecture is listed below. Basically it adds a shim layer, cal
 ![Vitess architecture](/assets/slack-discord/vitess-architecture.png)
  _Figure:  Vitess architecture_ 
 
-## Slack’s Vitess Adoption
+#### Slack’s Vitess Adoption
 
  Comparing with Slack’s previous master-master MySQL Cluster solution,  the Vitess solution supported flexible sharding. Instead of deeply interwinding sharing logic into the application layer, vitess supports per-table sharding policy. 
 
@@ -75,7 +75,7 @@ On the other hand, this infra investment justfied its value in mutltiple fronts.
 
 Discord has its own unique tech choices which are related to its product nature.  It uses Elixir for the Gateway/Websocket API.  Its HTTP/REST API is built with python.  It also uses Go, Rust and C++ to build mission critical services.   Because voice/video streaming is its core feature, it uses WebRTC for such features. 
 
-## Message Storage at Discord
+#### Message Storage at Discord
 
 Discord’s MVP was built in less than two months and used MongoDB as the single storage.  At that time, the message table, A.K.A. document in MongoDB terms, in MongoDB used a single compound index (channel_id, created_at).  
 
@@ -120,7 +120,7 @@ Third:  this is a very low level project, called Superdisk.  Basically discord b
  _Figure:  Discord’s superdisk system that powers its ScyllaDB cluster_ 
 
 
-##The performance improvement
+#### The performance improvement
 
  Overall the re-architect effort is relatively straight-forward, it replaces java-based Cassandra with C++ based ScyllaDB.  It uses a RUST-based “cache” layer to shield duplicated message requests at the same time.  It combines an SSD and a normal disk in its RAID. 
 
