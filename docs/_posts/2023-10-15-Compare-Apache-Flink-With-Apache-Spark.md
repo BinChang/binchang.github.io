@@ -138,11 +138,11 @@ parsedRDD = spark.read.text(path) \
     .map(parseLine) 
 ```
 
-Then we group all request logs by the request IPs, count the # of requests of each IP, then sort all records by visit count. 
+Then we count the number of requests per IP address and sort by visit count. Using `reduceByKey` is more efficient than `groupBy` followed by counting, as it performs local aggregation before shuffling data across the cluster.
 
 ```
-ipCountRddSorted = parsedRDD.groupBy(lambda r: r.ip)\
-    .map(lambda r: (r[0], len(list(r[1])))) \
+ipCountRddSorted = parsedRDD.map(lambda r: (r.ip, 1))\
+    .reduceByKey(lambda a, b: a + b)\
     .sortBy(lambda r: r[1], ascending=False)
 
 ipCountRddSorted.take(5)
@@ -162,11 +162,11 @@ The top 5 IP with the most requests are
 
 As the result shows, each IP sends out at most 2 requests, we do not have a lot of requests from certain IPs.
 
-Now let's find the most popular endpoints, and their traffic
+Now let's find the most popular endpoints and their traffic using the same efficient `reduceByKey` pattern.
 
 ```
-endpointCountRddSorted = parsedRDD.groupBy(lambda r: r.endPoint)\
-    .map(lambda r: (r[0], len(list(r[1])))) \
+endpointCountRddSorted = parsedRDD.map(lambda r: (r.endPoint, 1))\
+    .reduceByKey(lambda a, b: a + b)\
     .sortBy(lambda r: r[1], ascending=False)
 
 endpointCountRddSorted.take(5)
@@ -184,4 +184,4 @@ The top 5 most visited endpoints are
 ]
 ```
 
-As this sample application shows, with Apache Spark, we could quick write analysis code with a few lines of code. These code will be submitted to a task manager to execute via a big apache spark cluster, with this, we could write a few line's code to analyze the web scale data, and we do not need to worry about all the messy details of build distributed systems. 
+As this sample application shows, with Apache Spark, we could quick write analysis code with a few lines of code. These code will be submitted to a task manager to execute via a big apache spark cluster, with this, we could write a few line's code to analyze the web scale data, and we do not need to worry about all the messy details of build distributed systems.    
